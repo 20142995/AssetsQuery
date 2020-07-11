@@ -49,9 +49,8 @@ def update_data():
                     logger.info(f"网段已存在 :{item[0]}")
                     continue
                 logger.info(f"拆分网段中 :{item[0]}")
-                for ip in net2ip(item[0].strip(),_all=True,_error=True):
-                    if not db.set("INSERT INTO assets (ip,net,info,dev,dep,user) VALUES (?,?,?,?,?,?)",[ip,]+item):
-                        logger.info(f"数据插入错误 :{ip} {item}")
+                if not db.set("INSERT INTO assets (ip,net,info,dev,dep,user) VALUES (?,?,?,?,?,?)",[[ip,]+item for ip in net2ip(item[0].strip(),_all=True,_error=True)],many=True):
+                    logger.info(f"数据插入错误 : {item}")
     logger.info("本次更新数据完毕")
 
 def local_query(ip_str):

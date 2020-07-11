@@ -21,15 +21,19 @@ class sqliteDB():
         if create_table_sql:
             self.set(create_table_sql)
 
-    def set(self,sql,data=[]):
+    def set(self,sql,data=[],many=False):
         """
         数据库的插入、修改、删除函数
         :param sql: 传入的SQL语句 eg:INSERT INTO tablename (name) VALUES (?) / DELETE from tablename where name=? / UPDATE tablename set name = ? where name=?
-        :param data: 传入对应数据，[(name)]
+        :param data: 传入对应数据，many=False:[a,b,c,d] many=True:[[a,b,c,d],[a,b,c,d],[a,b,c,d]]
+        :param many: 传入批量数据，many=False
         :return: 返回操作数据库状态
         """
         try:
-            self.cursor.execute(sql,data)
+            if many:
+                self.cursor.executemany(sql,data)
+            else:
+                self.cursor.execute(sql,data)
             i = self.conn.total_changes
         except Exception:
             logger.error('数据操作失败', exc_info=True)
