@@ -36,7 +36,7 @@ class sqliteDB():
                 self.cursor.execute(sql,data)
             i = self.conn.total_changes
         except Exception:
-            logger.error('数据操作失败', exc_info=True)
+            logger.error(f'数据操作失败,sql:{sql}', exc_info=True)
             return False
         finally:
             self.conn.commit()
@@ -49,7 +49,7 @@ class sqliteDB():
         """
         数据库的查询函数
         :param sql: 传入的SQL语句,eg:select * from tablename where name=?
-        :param data: 传入查询参数,eg: [(name)]
+        :param data: 传入查询参数,eg: [name,]
         :return : 返回查询结果
         """
         results = self.cursor.execute(sql,data)

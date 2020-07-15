@@ -3,7 +3,6 @@
 
 import os
 import sys
-import prettytable
 from tkinter import *
 from tkinter.font import Font
 from tkinter.ttk import *
@@ -55,14 +54,14 @@ class Application(Application_ui):
     def query_button_Cmd(self, event=None):
         if self.input_text.get("0.0","end").strip():
             ip_str = ",".join([i for i in self.input_text.get("0.0","end").split("\n") if i.strip()])
-            tb = prettytable.PrettyTable()
-            tb.field_names = ["来源", "IP", "IP/MASK", "IP属性","承载设备","负责部门","负责人"]
+            items = []
+            items.append("\t".join(["来源", "IP", "IP/MASK", "IP属性","承载设备","负责部门","负责人"]))
             for item in local_query(ip_str).get("list",[]):
-                tb.add_row(["本地",]+item)
+                items.append("\t".join(["本地",]+item))
             for item in remote_query(ip_str).get("list",[]):
-                tb.add_row(item)
+                items.append("\t".join(item))
             self.output_text.delete('1.0','end')
-            self.output_text.insert(INSERT,tb)
+            self.output_text.insert(INSERT,"\n".join(items))
 
     def update_button_Cmd(self, event=None):
         update_data()
