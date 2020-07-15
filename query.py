@@ -82,6 +82,7 @@ def remote_query(ip_str):
     return _data
 
 if __name__ == "__main__":
+    update_data()
     ip_str = "192.168.1.1"
     data = local_query(ip_str)
     print(data)
